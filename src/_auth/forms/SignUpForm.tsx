@@ -1,8 +1,10 @@
-import React from 'react'
+import { Button } from "@/components/ui/button"
 
 const SighUpForm = () => {
   return (
-    <div>SighUpForm</div>
+    <div>
+    <Button>Click me</Button>
+  </div>
   )
 }
 
