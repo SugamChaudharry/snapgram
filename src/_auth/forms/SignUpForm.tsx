@@ -7,13 +7,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast"
 import Loader from "@/components/shared/Loader";
 
 
 import { SignupValidation } from "@/lib/validation";
-import { createNewUser } from "@/lib/appwrite/api";
+import { createUserAccount } from "@/lib/appwrite/api";
 
 const SignupForm = () => {
+  const { toast } = useToast()
   const [loding, isLoding] = useState(false);
   
   const form = useForm<z.infer<typeof SignupValidation>>({
@@ -29,9 +31,13 @@ const SignupForm = () => {
   // 
   const handleSignup = async (user: z.infer<typeof SignupValidation>) => {
     try {
-      const newUser = await createNewUser(user);
+      const newUser = await createUserAccount(user);
 
-      console.log(newUser);
+      if(!newUser) return toast({
+        title: "Sign Up failed. Please try again.",
+      });
+
+      // const session = await signInAccount();
       
     } catch (error) {
       console.log({ error });
