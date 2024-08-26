@@ -1,12 +1,11 @@
 import { ID } from "appwrite";
 import { INewUser } from "@/types";
 import { account, appwriteConfig, avatars, databases } from "./config";
-import { Url } from "url";
 
 export async function createUserAccount(user:INewUser){
     try {
         const newAccount = await account.create(
-            ID.unique(), 
+            ID.unique(),
             user.email,
             user.password,
             user.name
@@ -26,11 +25,19 @@ export async function createUserAccount(user:INewUser){
 
         return newUser;
     } catch (error) {
-        console.log("Error While Creating User ::: ", error );    
-        return error   
+        console.log("Error While Creating User ::: ", error );
+        return error
     }
 }
+export async function signInAccount(user: {email:string; password: string;}){
+    try {
+        const session = await account.createEmailPasswordSession(user.email, user.password);
+        return session;
+    } catch (error) {
+        console.log("Error while sign in account ",error);
 
+    }
+}
 export async function saveUserToDb (user: {
     accountId: string,
     name: string,
@@ -47,6 +54,6 @@ export async function saveUserToDb (user: {
         )
     } catch (error) {
         console.log("Error while saving user to db ::: ", error);
-        
+
     }
 }
